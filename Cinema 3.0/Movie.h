@@ -36,10 +36,9 @@ void movies() {
     fclose(fp);
 
     cout<<endl<<endl;
-    cout<<endl<<endl<<"Press Any Key to Home Page"<<endl;
-    getchar();
-    getchar();
-
+    cout<<endl<<endl<<"Enter any Integer to Home Page"<<endl;
+    int temp;
+    cin>>temp;
     Home();
 }
 
