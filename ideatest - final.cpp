@@ -1,3 +1,143 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n,i, TotalPlayer, LuckyNumber, MembersPoint[101],MaxInput, MinInput,  MembersInput, TotalRound,Hint, Diff ;
+string Name[101];
+
+struct player
+{
+    char name[51];
+    int point=0;
+    int position=0;
+};
+
+
+
+void MainMenu();
+void hint(int n, int MaxInput, int MinInput,int Diff );
+void  CurrentScore();
+void   GenerateNumber(int i);
+void Game();
+void ScoreBord();
+
+
+
+
+int main()
+{
+
+    MainMenu();
+    system("cls");
+    cout<<endl<<endl<<"                   Thanks for Playing          "<<endl;
+    return 0;
+
+}
+
+void MainMenu()
+{
+    system("cls");
+
+    cout<<"\t\t\t\t\t***** Welcome To Idea test Game  ***** "<<endl<<endl;
+    cout<<"\t\t\t\t\t----- Main Menu -----"<<endl<<endl<<endl;
+
+    cout<<"\t\t1. View Last scores "<<endl;
+    cout<<"\t\t2. Start game"<<endl;
+    cout<<"\t\t3. Close App"<<endl<<endl<<endl;
+    cout<<"Enter Your Choice"<<" : ";
+
+    switch(getchar())
+    {
+
+    case '1':
+        ScoreBord();
+        break;
+    case '2':
+       Game();
+        break;
+    case '3':
+        return ;
+    default:
+        MainMenu();
+    }
+
+
+}
+
+
+
+
+void hint(int n, int MaxInput, int MinInput,int Diff )
+{
+
+
+    cout <<endl<<endl;
+    cout<<"\t\t\t\t\t ##### Hints #####"<<endl;
+
+    int flag=0 ;
+
+    for(int i = 2; i < n; i++)
+    {
+        if(n % i == 0)
+        {
+            flag=1;
+            break;
+        }
+    }
+
+    if (flag==0)
+    {
+
+        cout << "\t\t\t"<<"* "<<". Number is Prime."<<endl;
+
+    }
+    else
+    {
+
+        if( n%2==0)
+        {
+
+            cout << "\t\t\t"<<"* "<<". Number is Even."<<endl;
+
+        }
+        else
+        {
+            cout << "\t\t\t"<<"* "<<". Number is Odd."<<endl;
+
+        }
+
+        if( n%3==0)
+        {
+
+            cout << "\t\t\t"<<"* "<<". Number is Divided By 3."<<endl;
+
+        }
+        else
+        {
+            cout << "\t\t\t"<<"* "<<". Number doesn't Divided by 3."<<endl;
+        }
+
+        if( n%5==0)
+        {
+            cout << "\t\t\t"<<"* "<<". Number is Divided By 5."<<endl;
+
+        }
+        else
+        {
+            cout << "\t\t\t"<<"* "<<". Number doesn't Divided by 5."<<endl;
+
+        }
+
+    }
+
+    if(n>( MinInput+MaxInput)/2)
+
+        cout << "\t\t\t"<<"* "<<". Number is situated in last half."<<endl;
+    else
+        cout << "\t\t\t"<<"* "<<". Number is situated in first half."<<endl;
+
+    return ;
+}
+
+
 void  CurrentScore() {
     cout<<"\t\t\t\t\t----- Score Board -----"<<endl<<endl<<endl;
     for( int i=0 ; i<TotalPlayer ; i++) {
@@ -9,15 +149,13 @@ void  CurrentScore() {
 
 
 
-int   GenerateNumber() {
+void   GenerateNumber(int i) {
     system("cls");
     CurrentScore();
     cout<<"\t\t****Lucky  Number Generated Successfully****"<<endl;
-
-    LuckyNumber= (rand()%Diff)+MinInput;
-
+    LuckyNumber=MinInput + (rand()%Diff);
     hint(LuckyNumber,MinInput,MaxInput,Diff);
-    return LuckyNumber;
+    cout<<endl<<endl<<"------ ROUND "<< i+1<<"------"<<endl<<endl;
 
 }
 
@@ -43,31 +181,37 @@ void Game() {
     cout<<"Enter Guess number : "<<endl;
     cout<<"Lowest number : ";
     cin>>MinInput;
-    cout<<"highest number : ";
+    cout<<"Highest number : ";
     cin>>MaxInput;
-    while(MaxInput<=MinInput) {
-        cout<<"\t\t\t Wrong input !!!!"<<endl<<"highest number should be bigger Lowest number"<<endl;
+    while(MaxInput==MinInput) {
+        cout<<"\t\t\t Wrong input !!!!"<<endl<<"Highest number and Lowest number should not be equal"<<endl;
         cout<<"Enter Guess number : "<<endl;
         cout<<"Lowest number : ";
         cin>>MinInput;
         cout<<"highest number : ";
         cin>>MaxInput;
     }
+    if(MaxInput<MinInput) {
+        int temp = MaxInput;
+        MaxInput=MinInput;
+        MinInput=temp;
+    }
+
+    Diff= MaxInput-MinInput+1;
+
     cout<<"Total Round want to play = " ;
     cin>>TotalRound;
     while (TotalRound<=0) {
-
         cout<<"\t\t\t Wrong input !!!!"<<endl<<"Total Round must be at least 1"<<endl;
         cout<<"Total Round want to play = " ;
         cin>>TotalRound;
 
     }
 
-    Diff= MaxInput-MinInput+1;
 
 
-    cout<<endl<<endl<<"------ ROUND "<< 1<<"------"<<endl<<endl;
-    GenerateNumber();
+
+    GenerateNumber(0);
 
     for(int j=0 ; j<TotalRound; j++)  {
 
@@ -75,10 +219,11 @@ void Game() {
             cout<<endl<<endl<<"------ ROUND "<< j+1<<"------"<<endl<<endl;
 
 
+
         for( i=0 ; i<TotalPlayer ; i++) {
             cout<<Name[i]<<"'s Turn"<<" :  " << "Enter guess number Between " <<MinInput<<"  - "<< MaxInput<<"  : " ;
             cin>>MembersInput;
-            while(MembersInput >MaxInput and  MembersInput<MinInput) {
+            while(MembersInput >MaxInput ||  MembersInput<MinInput) {
                 cout<<endl<<"       Worng !!!!!"<< endl<<"     Please input again       " << endl;
                 cout<<Name[i]<<"'s Turn"<<" :  " << "Enter guess number Between " <<MinInput<<"  - "<< MaxInput<<"  : " ;
                 cin>>MembersInput;
@@ -91,21 +236,17 @@ void Game() {
                 cout<<"Enter to continue........."<<endl;
                 getchar();
                 getchar();
-                GenerateNumber();
-            } else if(LuckyNumber>MembersInput)
+                GenerateNumber(j);
+            }
+
+
+
+            else if(LuckyNumber>MembersInput)
                 cout<<"Number is bigger then "<<MembersInput<<endl;
             else
                 cout<<"Number is smaller then "<<MembersInput<<endl;
         }
-//
-//        cout<<endl<<" Number is "<<LuckyNumber<<endl;
-//        for( i=0 ; i<TotalPlayer ; i++) {
-//            if(MembersInput[i]==LuckyNumber) {
-//                MembersPoint[i]++;
-//                cout<<"Congratulation "<<Name[i]<<" : Your score is updated, Now your point is :"<<MembersPoint[i]<<endl;
-//            } else
-//                cout<<"Sorry "<<Name[i]<<" : Your score is Not updated, Now your point is :"<<MembersPoint[i]<<endl;
-//        }
+
         cout<<"Enter to continue........."<<endl;
         getchar();
         getchar();
@@ -150,13 +291,15 @@ void Game() {
 
     cout<<endl<<endl<<endl;
 
-    ///                                                             *****   Saving Result *******
-    struct player p1;
+    ///                                     *****   Saving Result *******
+
 
     FILE *fp;
     fp=fopen("player.txt","ab+");
 
     for( i=0 ; i<TotalPlayer ; i++) {
+
+        struct player p1;
 
         strcpy(p1.name, Name[i].c_str());
 
@@ -169,7 +312,7 @@ void Game() {
     }
 
     fclose(fp);
-///                                                       ****** End ****************************
+///                                      ****** End ******
     cout<<endl<<"1. Play Again"<<endl;
     cout<<"2. Return Home Page"<<endl;
     cout<<"Enter Your Choice"<<" : ";
@@ -183,3 +326,31 @@ void Game() {
     return ;
 
 }
+void ScoreBord()
+{
+
+    system("cls");
+
+    cout<<"\t\t\t\t\t----- Score Board -----"<<endl<<endl<<endl;
+
+    FILE *fp;
+    struct player p1;
+    fp=fopen("player.txt","ab+");
+    fseek(fp,0,SEEK_SET);
+
+    while(fread(&p1,sizeof(p1),1,fp)==1)
+    {
+        if(p1.position==1)
+        cout<<"\t-----******--------"<<endl;
+        cout<<"Position : "<<p1.position<<" "<<p1.name<<"("<<p1.point<<")"<<endl;
+    }
+    fclose(fp);
+
+cout<<endl<<endl;
+cout<<endl<<endl<<"Press Any Key to Main Menu"<<endl;
+getchar();
+getchar();
+        MainMenu();
+}
+
+
