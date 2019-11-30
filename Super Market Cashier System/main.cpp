@@ -10,8 +10,8 @@
 #include<time.h>
 #define RETURNTIME 15
 using namespace std;
-map< string ,pair<string , double >>item;
-map< string ,pair<string , double >>::iterator it ;
+map< string ,pair<string , double > >item;
+map< string ,pair<string , double > >::iterator it ;
 double  total;
  map <string, int > cart;
  map <string, int > :: iterator itr;

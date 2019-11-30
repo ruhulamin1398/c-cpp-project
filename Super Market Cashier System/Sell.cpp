@@ -74,7 +74,7 @@ void Receipt() {
         gotoxy(45,j);
         cout<<"|  "<<it->second.second;
         gotoxy(60,j);
-        cout<<"|"<<itr->second;
+        cout<<"|  "<<itr->second;
         gotoxy(75,j);
         cout<<"|  "<<it->second.second*itr->second;
         gotoxy(94,j);
@@ -122,7 +122,7 @@ void Payment() {
     }
     cout<<"Change Given: "<<pay-total<<endl;
     cout<<endl;
-            cout<<"Try another search?(Y/N): ";
+            cout<<"Try another Customer?(Y/N): ";
             getchar();
             char ch=getchar();
 
